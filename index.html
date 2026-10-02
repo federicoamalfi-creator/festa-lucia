@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1° Compleanno di Lucia - Conferma Presenza</title>
+  <title>1° Compleanno di Lucia - RSVP</title>
   <style>
     :root {
       --bg-color: #fdfbf7;
@@ -152,17 +152,13 @@
       color: #555;
     }
 
-    input[type="text"] {
+    input[type="text"], input[type="password"] {
       width: 100%;
       padding: 12px;
       border: 1.5px solid #ddd;
       border-radius: 10px;
       font-size: 1rem;
       outline: none;
-    }
-
-    input[type="text"]:focus {
-      border-color: var(--primary);
     }
 
     .family-members-section {
@@ -226,124 +222,104 @@
       box-shadow: 0 4px 10px rgba(232, 165, 152, 0.4);
     }
 
-    .btn-submit:hover {
-      background: var(--primary-dark);
+    .btn-submit:disabled {
+      background: #ccc;
+      box-shadow: none;
     }
 
-    .admin-link {
+    .alert-msg {
+      display: none;
       text-align: center;
       padding: 15px;
-      background: #f0f0f0;
-      border-top: 1px solid #e0e0e0;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      font-weight: 600;
     }
 
-    .admin-link button {
+    .alert-success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid var(--secondary);
+    }
+
+    .alert-error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef5350;
+    }
+
+    /* Area Riservata */
+    .admin-footer {
+      border-top: 1px solid #eee;
+      padding: 15px;
+      text-align: center;
+      background: #fafafa;
+    }
+
+    .admin-toggle-btn {
       background: none;
       border: none;
-      color: #777;
-      text-decoration: underline;
+      color: #999;
       font-size: 0.85rem;
+      text-decoration: underline;
       cursor: pointer;
     }
 
-    /* Modale Admin */
-    .modal {
+    .admin-panel {
       display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+      margin-top: 15px;
+      text-align: left;
+      background: #fff;
       padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
     }
 
-    .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      width: 100%;
-      max-width: 450px;
-      max-height: 85vh;
-      overflow-y: auto;
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 15px 0;
     }
 
-    .modal-header {
+    .stat-card {
+      background: var(--wood-light);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+
+    .guest-list-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .summary-box {
-      display: flex;
-      justify-content: space-around;
-      background: var(--wood-light);
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .summary-item h3 {
-      color: var(--wood);
-      font-size: 1.2rem;
-    }
-
-    .summary-item p {
-      font-size: 0.8rem;
-      color: #666;
-    }
-
-    .family-card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 10px;
-      position: relative;
-    }
-
-    .family-card.absent {
-      background: #ffebee;
-      border-color: #ffcdd2;
-    }
-
-    .family-card h4 {
-      font-size: 1rem;
-      margin-bottom: 5px;
-    }
-
-    .family-card p {
-      font-size: 0.85rem;
-      color: #555;
-    }
-
-    .delete-entry {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      color: #d32f2f;
-      cursor: pointer;
       font-size: 0.9rem;
     }
 
-    .success-msg {
-      display: none;
-      text-align: center;
-      padding: 20px;
+    .badge-yes {
       background: #e8f5e9;
-      border-radius: 12px;
       color: #2e7d32;
-      margin-bottom: 20px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .badge-no {
+      background: #ffebee;
+      color: #c62828;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -361,33 +337,23 @@
           <text x="110" y="62" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#ffffff" text-anchor="middle">1</text>
         </g>
 
-        <!-- Bambina con Ciuffetto a Fontanella -->
+        <!-- Bambina -->
         <g id="baby">
-          <!-- Corpo / Vestitino -->
           <path d="M 45,125 L 75,125 L 82,155 L 38,155 Z" fill="#e8a598" />
-          <!-- Braccia -->
           <path d="M 45,130 L 30,115" stroke="#fce0d6" stroke-width="7" stroke-linecap="round" />
           <path d="M 75,130 L 105,100" stroke="#fce0d6" stroke-width="7" stroke-linecap="round" />
-          <!-- Gambe -->
           <rect x="48" y="155" width="8" height="15" fill="#fce0d6" />
           <rect x="64" y="155" width="8" height="15" fill="#fce0d6" />
-          <!-- Scarpe -->
           <ellipse cx="52" cy="170" rx="6" ry="4" fill="#ffffff" />
           <ellipse cx="68" cy="170" rx="6" ry="4" fill="#ffffff" />
-          <!-- Testa -->
           <circle cx="60" cy="95" r="22" fill="#fce0d6" />
-          <!-- Capelli Biondo Scuro / Castano Chiaro -->
           <path d="M 38,92 C 38,70 82,70 82,92 C 82,80 38,80 38,92 Z" fill="#a67c52" />
-          <!-- Ciuffetto a Fontanella -->
           <path d="M 60,75 C 55,60 45,55 42,58 C 50,65 58,72 60,75 Z" fill="#a67c52" />
           <path d="M 60,75 C 65,60 75,55 78,58 C 70,65 62,72 60,75 Z" fill="#a67c52" />
-          <!-- Elastico Capelli -->
           <ellipse cx="60" cy="74" rx="4" ry="2" fill="#ff6b81" />
-          <!-- Occhi e Sorriso -->
           <circle cx="53" cy="95" r="2.5" fill="#4a4a4a" />
           <circle cx="67" cy="95" r="2.5" fill="#4a4a4a" />
           <path d="M 54,103 Q 60,109 66,103" fill="none" stroke="#4a4a4a" stroke-width="2" stroke-linecap="round" />
-          <!-- Guance -->
           <circle cx="48" cy="99" r="3.5" fill="#ffb7c5" opacity="0.6" />
           <circle cx="72" cy="99" r="3.5" fill="#ffb7c5" opacity="0.6" />
         </g>
@@ -415,24 +381,22 @@
   <div class="rsvp-form">
     <div class="form-title">Conferma la tua presenza</div>
 
-    <div id="successMessage" class="success-msg">
-      Grazie! La tua risposta è stata registrata con successo. ❤️
-    </div>
+    <div id="alertBox" class="alert-msg"></div>
 
-    <form id="rsvpForm">
+    <form id="rsvpForm" onsubmit="submitForm(event)">
       <div class="status-buttons">
         <div class="status-btn active-yes" id="btnYes" onclick="setStatus(true)">Ci sarò! 🎉</div>
         <div class="status-btn" id="btnNo" onclick="setStatus(false)">Non ci sarò 😢</div>
       </div>
 
       <div class="input-group">
-        <label for="familyName">Nome della Famiglia / Referente</label>
+        <label for="familyName">Nome Referente / Famiglia</label>
         <input type="text" id="familyName" placeholder="Es. Famiglia Rossi / Mario Rossi" required>
       </div>
 
       <div id="attendingFields">
         <div class="family-members-section">
-          <label>Componenti della famiglia partecipe:</label>
+          <label>Componenti della famiglia presenti:</label>
           <div id="membersContainer">
             <div class="member-row">
               <input type="text" placeholder="Nome componente" class="member-name" required>
@@ -446,200 +410,248 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-submit">Invia Conferma</button>
+      <button type="submit" id="submitBtn" class="btn-submit">Invia Conferma</button>
     </form>
   </div>
 
-  <div class="admin-link">
-    <button onclick="openAdminModal()">Area Riservata Genitori (Federico & Giulia)</button>
-  </div>
-</div>
-
-<!-- Modal Riservata Genitori -->
-<div id="adminModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Presenze Ricevute</h2>
-      <button class="close-btn" onclick="closeAdminModal()">&times;</button>
-    </div>
-
-    <div id="passwordPrompt">
-      <div class="input-group">
+  <!-- Area Riservata -->
+  <div class="admin-footer">
+    <button class="admin-toggle-btn" onclick="toggleAdminPanel()">🔒 Area Riservata Organizzatori</button>
+    
+    <div id="adminPanel" class="admin-panel">
+      <div id="adminLogin">
         <label for="adminPass">Inserisci Password:</label>
-        <input type="password" id="adminPass" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
-      </div>
-      <button class="btn-submit" onclick="checkPassword()" style="margin-top: 10px;">Accedi</button>
-      <p id="passError" style="color: red; font-size: 0.85rem; margin-top: 5px; display: none;">Password errata!</p>
-    </div>
-
-    <div id="adminContent" style="display: none;">
-      <div class="summary-box">
-        <div class="summary-item">
-          <h3 id="totalAdults">0</h3>
-          <p>Adulti</p>
-        </div>
-        <div class="summary-item">
-          <h3 id="totalKids">0</h3>
-          <p>Bambini</p>
-        </div>
-        <div class="summary-item">
-          <h3 id="totalAbsent">0</h3>
-          <p>Assenti</p>
+        <div style="display:flex; gap: 8px; margin-top: 5px;">
+          <input type="password" id="adminPass" placeholder="Password">
+          <button class="btn-add" onclick="loginAdmin()">Accedi</button>
         </div>
       </div>
 
-      <div id="reservationsList"></div>
+      <div id="adminContent" style="display:none;">
+        <h3 style="color: var(--primary-dark); font-size: 1.1rem;">Riepilogo Presenze</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="statTotal">0</div>
+            <small>Persone Totali</small>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statAdults">0</div>
+            <small>Adulti</small>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statKids">0</div>
+            <small>Bambini</small>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statNo">0</div>
+            <small>Assenti</small>
+          </div>
+        </div>
+
+        <h4 style="margin-top: 15px; font-size: 0.95rem;">Lista Invitati:</h4>
+        <div id="guestListContainer" style="max-height: 250px; overflow-y: auto; margin-top: 8px;">
+          Caricamento...
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
+  const BIN_ID = '6ac002d8ffd5d16053472c17';
+  const API_KEY = '$2a$10$e0t9x82rb7FPOicqjpMKneZnzzolgBGjoZvE2hCGxfvU0VFPpKCLS';
+  const ADMIN_PASS = 'Lucia2026';
+
   let isAttending = true;
+  let memberCount = 1;
 
   function setStatus(status) {
     isAttending = status;
     const btnYes = document.getElementById('btnYes');
     const btnNo = document.getElementById('btnNo');
     const attendingFields = document.getElementById('attendingFields');
+    const memberInputs = document.querySelectorAll('.member-name');
 
     if (status) {
       btnYes.className = 'status-btn active-yes';
       btnNo.className = 'status-btn';
       attendingFields.style.display = 'block';
+      memberInputs.forEach(i => i.required = true);
     } else {
       btnYes.className = 'status-btn';
       btnNo.className = 'status-btn active-no';
       attendingFields.style.display = 'none';
+      memberInputs.forEach(i => i.required = false);
     }
   }
 
-  function addMemberRow(name = '', type = 'Adulto') {
+  function addMemberRow() {
+    memberCount++;
     const container = document.getElementById('membersContainer');
     const div = document.createElement('div');
     div.className = 'member-row';
     div.innerHTML = `
-      <input type="text" placeholder="Nome componente" class="member-name" value="${name}" required>
+      <input type="text" placeholder="Nome componente" class="member-name" ${isAttending ? 'required' : ''}>
       <select class="member-type">
-        <option value="Adulto" ${type === 'Adulto' ? 'selected' : ''}>Adulto</option>
-        <option value="Bambino" ${type === 'Bambino' ? 'selected' : ''}>Bambino</option>
+        <option value="Adulto">Adulto</option>
+        <option value="Bambino">Bambino</option>
       </select>
       <button type="button" class="btn-remove" onclick="this.parentElement.remove()">✕</button>
     `;
     container.appendChild(div);
   }
 
-  // Salvataggio nel LocalStorage
-  document.getElementById('rsvpForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+  async function getDatabaseData() {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': API_KEY }
+      });
+      const data = await res.json();
+      return Array.isArray(data.record.invitati) ? data.record.invitati : [];
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  }
 
-    const familyName = document.getElementById('familyName').value;
+  async function saveDatabaseData(list) {
+    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY
+      },
+      body: JSON.stringify({ invitati: list })
+    });
+  }
+
+  async function submitForm(e) {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submitBtn');
+    const alertBox = document.getElementById('alertBox');
+    
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Invio in corso...";
+
+    const familyName = document.getElementById('familyName').value.trim();
     let members = [];
 
     if (isAttending) {
-      const nameInputs = document.querySelectorAll('.member-name');
-      const typeSelects = document.querySelectorAll('.member-type');
-
-      nameInputs.forEach((input, index) => {
-        if(input.value.trim() !== "") {
-          members.push({
-            name: input.value.trim(),
-            type: typeSelects[index].value
-          });
-        }
+      const rows = document.querySelectorAll('.member-row');
+      rows.forEach(row => {
+        const name = row.querySelector('.member-name').value.trim();
+        const type = row.querySelector('.member-type').value;
+        if (name) members.push({ name, type });
       });
     }
 
     const newEntry = {
       id: Date.now(),
-      familyName: familyName,
+      family: familyName,
       attending: isAttending,
-      members: members
+      members: members,
+      date: new Date().toLocaleDateString('it-IT')
     };
 
-    let list = JSON.parse(localStorage.getItem('lucia_party_rsvp')) || [];
-    list.push(newEntry);
-    localStorage.setItem('lucia_party_rsvp', JSON.stringify(list));
+    try {
+      const currentList = await getDatabaseData();
+      currentList.push(newEntry);
+      await saveDatabaseData(currentList);
 
-    document.getElementById('rsvpForm').reset();
-    document.getElementById('successMessage').style.display = 'block';
-    setTimeout(() => {
-      document.getElementById('successMessage').style.display = 'none';
-    }, 4000);
-  });
-
-  // Funzioni Admin
-  function openAdminModal() {
-    document.getElementById('adminModal').style.display = 'flex';
-  }
-
-  function closeAdminModal() {
-    document.getElementById('adminModal').style.display = 'none';
-  }
-
-  function checkPassword() {
-    const pass = document.getElementById('adminPass').value;
-    if (pass === 'Lucia2026') {
-      document.getElementById('passwordPrompt').style.display = 'none';
-      document.getElementById('adminContent').style.display = 'block';
-      loadAdminData();
-    } else {
-      document.getElementById('passError').style.display = 'block';
+      alertBox.className = 'alert-msg alert-success';
+      alertBox.innerText = "Grazie! La tua risposta è stata registrata con successo. ❤";
+      alertBox.style.display = 'block';
+      document.getElementById('rsvpForm').reset();
+      setStatus(true);
+    } catch (err) {
+      alertBox.className = 'alert-msg alert-error';
+      alertBox.innerText = "Si è verificato un errore. Riprova più tardi.";
+      alertBox.style.display = 'block';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Invia Conferma";
     }
   }
 
-  function loadAdminData() {
-    const list = JSON.parse(localStorage.getItem('lucia_party_rsvp')) || [];
-    const container = document.getElementById('reservationsList');
-    container.innerHTML = '';
+  function toggleAdminPanel() {
+    const panel = document.getElementById('adminPanel');
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+  }
 
-    let adults = 0;
-    let kids = 0;
-    let absent = 0;
+  async function loginAdmin() {
+    const pass = document.getElementById('adminPass').value;
+    if (pass === ADMIN_PASS) {
+      document.getElementById('adminLogin').style.display = 'none';
+      document.getElementById('adminContent').style.display = 'block';
+      await loadAdminData();
+    } else {
+      alert("Password errata!");
+    }
+  }
+
+  async function loadAdminData() {
+    const container = document.getElementById('guestListContainer');
+    container.innerHTML = "Caricamento in corso...";
+
+    const list = await getDatabaseData();
+
+    let total = 0, adults = 0, kids = 0, noCount = 0;
+    container.innerHTML = "";
 
     if (list.length === 0) {
-      container.innerHTML = '<p style="text-align:center; color:#888;">Nessuna risposta ricevuta finora.</p>';
+      container.innerHTML = "<small>Nessuna risposta registrata finora.</small>";
     }
 
-    list.forEach(item => {
+    list.reverse().forEach(item => {
       if (item.attending) {
         item.members.forEach(m => {
+          total++;
           if (m.type === 'Adulto') adults++;
-          if (m.type === 'Bambino') kids++;
+          else kids++;
         });
       } else {
-        absent++;
+        noCount++;
       }
 
-      const card = document.createElement('div');
-      card.className = `family-card ${!item.attending ? 'absent' : ''}`;
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'guest-list-item';
       
-      let membersHTML = '';
-      if (item.attending) {
-        membersHTML = item.members.map(m => `• ${m.name} (${m.type})`).join('<br>');
-      } else {
-        membersHTML = '<em>Non parteciperà</em>';
-      }
+      let details = item.attending 
+        ? item.members.map(m => `${m.name} (${m.type})`).join(', ') 
+        : 'Non parteciperà';
 
-      card.innerHTML = `
-        <button class="delete-entry" onclick="deleteEntry(${item.id})">Elimina</button>
-        <h4>${item.familyName}</h4>
-        <p>${membersHTML}</p>
+      itemDiv.innerHTML = `
+        <div>
+          <strong>${item.family}</strong><br>
+          <small style="color:#777;">${details}</small>
+        </div>
+        <div>
+          <span class="${item.attending ? 'badge-yes' : 'badge-no'}">
+            ${item.attending ? 'SI' : 'NO'}
+          </span>
+          <button onclick="deleteEntry(${item.id})" style="border:none; background:none; color:#c62828; cursor:pointer; margin-left:5px;">🗑</button>
+        </div>
       `;
-      container.appendChild(card);
+      container.appendChild(itemDiv);
     });
 
-    document.getElementById('totalAdults').innerText = adults;
-    document.getElementById('totalKids').innerText = kids;
-    document.getElementById('totalAbsent').innerText = absent;
+    document.getElementById('statTotal').innerText = total;
+    document.getElementById('statAdults').innerText = adults;
+    document.getElementById('statKids').innerText = kids;
+    document.getElementById('statNo').innerText = noCount;
   }
 
-  function deleteEntry(id) {
-    let list = JSON.parse(localStorage.getItem('lucia_party_rsvp')) || [];
-    list = list.filter(item => item.id !== id);
-    localStorage.setItem('lucia_party_rsvp', JSON.stringify(list));
-    loadAdminData();
+  async function deleteEntry(id) {
+    if (confirm("Vuoi cancellare questa risposta?")) {
+      let list = await getDatabaseData();
+      list = list.filter(item => item.id !== id);
+      await saveDatabaseData(list);
+      await loadAdminData();
+    }
   }
 </script>
 
 </body>
 </html>
+
+      
